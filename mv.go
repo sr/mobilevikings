@@ -11,7 +11,7 @@ const defaultBaseURL = "https://api.mobilevikings.be/v3/%s/"
 
 type Client interface {
 	PhoneNumbers() ([]PhoneNumber, error)
-	//Insights(phoneNumber string) []*Insight
+	Insights(phoneNumber string) (*Insights, error)
 }
 
 type PhoneNumber struct {
@@ -19,12 +19,12 @@ type PhoneNumber struct {
 	Alias string `json:"alias"`
 }
 
-type Insight struct {
-	VikingLife *VikingLife `json:viking_life`
+type Insights struct {
+	VikingLife VikingLife `json:"viking_life"`
 }
 
 type VikingLife struct {
-	DaysAsAViking int
+	DaysAsViking int `json:"days_as_a_viking"`
 }
 
 func NewClient(accessToken string) Client {
@@ -45,9 +45,6 @@ type phoneNumbersResponse struct {
 	Results []PhoneNumber `json:"results"`
 }
 
-// func (c *client) Insights(phoneNumber string) ([]*Insight, error) {
-// }
-
 func (c *client) PhoneNumbers() ([]PhoneNumber, error) {
 	response, err := c.doRequest("GET", "msisdns")
 	if err != nil {
@@ -58,6 +55,18 @@ func (c *client) PhoneNumbers() ([]PhoneNumber, error) {
 		return nil, err
 	}
 	return unmarshalled.Results, nil
+}
+
+func (c *client) Insights(phoneNumber string) (*Insights, error) {
+	response, err := c.doRequest("GET", fmt.Sprintf("msisdns/%s/insights", phoneNumber))
+	if err != nil {
+		return &Insights{}, err
+	}
+	unmarshalled := &Insights{}
+	if err := json.Unmarshal(response, &unmarshalled); err != nil {
+		return &Insights{}, err
+	}
+	return unmarshalled, nil
 }
 
 func (c *client) doRequest(method string, path string) ([]byte, error) {
