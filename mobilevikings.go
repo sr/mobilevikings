@@ -9,6 +9,7 @@ type Client interface {
 	PhoneNumbers() ([]PhoneNumber, error)
 	Insights(phoneNumber string) (*Insights, error)
 	Usage(phoneNumber string, from time.Time, until time.Time) ([]Usage, error)
+	Topups(phoneNumber string) ([]Topup, error)
 }
 
 type PhoneNumber struct {
@@ -29,6 +30,14 @@ type Usage struct {
 	PriceString string `json:"price"`
 	Length      int64  `json:"lenght"`
 	Number      string `json:"number"`
+}
+
+type Topup struct {
+	AmountString  string `json:"amount"`
+	ExecutedOn    string `json:"executed_on"`
+	PaymentMethod string `json:"payment_method"`
+	PricePlan     string `json:"priceplan"`
+	Status        string `json:"done"`
 }
 
 func (u Usage) Price() (int64, error) {

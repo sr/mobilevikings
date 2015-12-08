@@ -33,6 +33,10 @@ type usageResponse struct {
 	Results []Usage `json:"results"`
 }
 
+type topupsResponse struct {
+	Results []Topup `json:"results"`
+}
+
 func (c *client) PhoneNumbers() ([]PhoneNumber, error) {
 	response, err := c.doRequest("GET", "msisdns/")
 	if err != nil {
@@ -73,6 +77,21 @@ func (c *client) Usage(
 		return nil, err
 	}
 	unmarshalled := &usageResponse{}
+	if err := json.Unmarshal(response, &unmarshalled); err != nil {
+		return nil, err
+	}
+	return unmarshalled.Results, nil
+}
+
+func (c *client) Topups(phoneNumber string) ([]Topup, error) {
+	response, err := c.doRequest(
+		"GET",
+		fmt.Sprintf("msisdns/%s/topups/", phoneNumber),
+	)
+	if err != nil {
+		return nil, err
+	}
+	unmarshalled := &topupsResponse{}
 	if err := json.Unmarshal(response, &unmarshalled); err != nil {
 		return nil, err
 	}
