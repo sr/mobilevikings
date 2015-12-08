@@ -18,15 +18,10 @@ install: deps
 
 lint: testdeps
 	go get -v github.com/golang/lint/golint
-	for file in $$(find . -name '*.go' | grep -v '\.pb\.go' | grep -v '\.pb\.gw\.go'); do \
-		golint $${file}; \
-		if [ -n "$$(golint $${file})" ]; then \
-			exit 1; \
-		fi; \
-	done
+	golint ./...
 
 vet: testdeps
-	go vet ./src/...
+	go vet ./...
 
 errcheck: testdeps
 	go get -v github.com/kisielk/errcheck

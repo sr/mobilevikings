@@ -95,8 +95,8 @@ func (c *client) Topups(phoneNumber string, pageURL string) (TopupPage, error) {
 }
 
 func (c *client) doRequest(method string, path string) ([]byte, error) {
-	fullUrl := strings.Join([]string{c.baseURL, path}, "/")
-	request, err := http.NewRequest(method, fullUrl, nil)
+	fullURL := strings.Join([]string{c.baseURL, path}, "/")
+	request, err := http.NewRequest(method, fullURL, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (c *client) doRequest(method string, path string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
+	defer func() { _ = response.Body.Close() }()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err

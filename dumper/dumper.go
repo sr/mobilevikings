@@ -11,6 +11,10 @@ import (
 	"github.com/sr/mobilevikings"
 )
 
+type Dumper interface {
+	Dump() error
+}
+
 type dumper struct {
 	client    mobilevikings.Client
 	directory string
@@ -19,7 +23,7 @@ type dumper struct {
 func NewDumper(
 	client mobilevikings.Client,
 	directory string,
-) *dumper {
+) Dumper {
 	return &dumper{client, directory}
 }
 

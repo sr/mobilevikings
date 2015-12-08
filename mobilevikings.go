@@ -26,10 +26,11 @@ type VikingLife struct {
 }
 
 type Usage struct {
-	Type        string `json:"type"`
-	PriceString string `json:"price"`
-	Length      int    `json:"length"`
-	Number      string `json:"number"`
+	Type           string `json:"type"`
+	Length         int    `json:"length"`
+	PriceString    string `json:"price"`
+	StartTimestamp string `json:"start_timestamp"`
+	Number         string `json:"number"`
 }
 
 type TopupPage struct {
