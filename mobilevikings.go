@@ -9,7 +9,7 @@ type Client interface {
 	PhoneNumbers() ([]PhoneNumber, error)
 	Insights(phoneNumber string) (*Insights, error)
 	Usage(phoneNumber string, from time.Time, until time.Time) ([]Usage, error)
-	Topups(phoneNumber string) ([]Topup, error)
+	Topups(phoneNumber string, pageURL string) (TopupPage, error)
 }
 
 type PhoneNumber struct {
@@ -30,6 +30,12 @@ type Usage struct {
 	PriceString string `json:"price"`
 	Length      int64  `json:"lenght"`
 	Number      string `json:"number"`
+}
+
+type TopupPage struct {
+	Next     string  `json:"next"`
+	Previous string  `json:"previous"`
+	Results  []Topup `json:"results"`
 }
 
 type Topup struct {
