@@ -1,4 +1,4 @@
-package mv
+package mobilevikings
 
 import (
 	"encoding/json"
@@ -8,28 +8,6 @@ import (
 )
 
 const defaultBaseURL = "https://api.mobilevikings.be/v3/%s/"
-
-type Client interface {
-	PhoneNumbers() ([]PhoneNumber, error)
-	Insights(phoneNumber string) (*Insights, error)
-}
-
-type PhoneNumber struct {
-	ID    string `json:"msisdn"`
-	Alias string `json:"alias"`
-}
-
-type Insights struct {
-	VikingLife VikingLife `json:"viking_life"`
-}
-
-type VikingLife struct {
-	DaysAsViking int `json:"days_as_a_viking"`
-}
-
-func NewClient(accessToken string) Client {
-	return newClient(accessToken)
-}
 
 func newClient(accessToken string) *client {
 	return &client{defaultBaseURL, accessToken, &http.Client{}}
