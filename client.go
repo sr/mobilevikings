@@ -88,7 +88,6 @@ func (c *client) Topups(phoneNumber string, pageURL string) (TopupPage, error) {
 		return TopupPage{}, err
 	}
 	unmarshalled := TopupPage{}
-	fmt.Println(string(response))
 	if err := json.Unmarshal(response, &unmarshalled); err != nil {
 		return TopupPage{}, err
 	}
