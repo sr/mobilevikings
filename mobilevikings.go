@@ -1,6 +1,9 @@
 package mobilevikings
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 type Client interface {
 	PhoneNumbers() ([]PhoneNumber, error)
@@ -22,9 +25,20 @@ type VikingLife struct {
 }
 
 type Usage struct {
-	Type    string `json:"type"`
-	Price   string `json:"price"`
-	Numbert string `json:"number"`
+	Type        string `json:"type"`
+	PriceString string `json:"price"`
+	Length      int64  `json:"lenght"`
+	Number      string `json:"number"`
+}
+
+func (u Usage) Price() (int64, error) {
+	matches := usageAmount.FindStringSubmatch(u.PriceString)
+	i, err := strconv.ParseInt(matches[1], 10, 64)
+	f, err := strconv.ParseInt(matches[2], 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return i + (f * 100), nil
 }
 
 func NewClient(accessToken string) Client {

@@ -6,11 +6,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"time"
 )
 
 const defaultBaseURL = "https://api.mobilevikings.be/v3"
+
+var usageAmount = regexp.MustCompile(`^([\d+]{1,})\.([\d+]{2})$`)
 
 func newClient(accessToken string) *client {
 	return &client{defaultBaseURL, accessToken, &http.Client{}}
@@ -70,7 +73,6 @@ func (c *client) Usage(
 		return nil, err
 	}
 	unmarshalled := &usageResponse{}
-	fmt.Println(string(response))
 	if err := json.Unmarshal(response, &unmarshalled); err != nil {
 		return nil, err
 	}
@@ -79,7 +81,6 @@ func (c *client) Usage(
 
 func (c *client) doRequest(method string, path string) ([]byte, error) {
 	fullUrl := strings.Join([]string{c.baseURL, path}, "/")
-	fmt.Println(fullUrl)
 	request, err := http.NewRequest(method, fullUrl, nil)
 	if err != nil {
 		return nil, err
