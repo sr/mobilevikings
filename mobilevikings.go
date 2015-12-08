@@ -28,7 +28,7 @@ type VikingLife struct {
 type Usage struct {
 	Type        string `json:"type"`
 	PriceString string `json:"price"`
-	Length      int64  `json:"lenght"`
+	Length      int    `json:"length"`
 	Number      string `json:"number"`
 }
 
